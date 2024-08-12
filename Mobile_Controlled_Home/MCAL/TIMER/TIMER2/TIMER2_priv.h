@@ -1,0 +1,75 @@
+/*
+ * TIMER2_priv.h
+ *
+ *  Created on: Aug 2, 2024
+ *      Author: aya
+ */
+
+#ifndef MCAL_TIMER_TIMER2_TIMER2_PRIV_H_
+#define MCAL_TIMER_TIMER2_TIMER2_PRIV_H_
+
+#define TIMER2_F_CPU								8000
+#define TIMER2_OVF_COUNTS							256
+
+
+
+
+//CALLBACK
+#define TIMER2_DELAY_CALLBACK						0
+#define TIMER2_OVF_CALLBACK							1
+#define TIMER2_CTC_CALLBACK							2
+#define TIMER2_CALL_BACK							3
+
+
+//Prescaler
+
+#define TIMER2_NO_CLOCK_SOURCE						0
+
+#define TIMER2_PRESCALER_1							1
+
+#define TIMER2_PRESCALER_8							8
+
+#define TIMER2_PRESCALER_32							32
+
+#define TIMER2_PRESCALER_64							64
+
+#define TIMER2_PRESCALER_128						128
+
+#define TIMER2_PRESCALER_256						256
+
+#define TIMER2_PRESCALER_1024						1024
+
+
+//Mode
+
+#define TIMER2_OVER_FLOW							17
+
+#define TIMER2_COMPARE_MATCH						19
+
+#define TIMER2_PHASE_CORRECT_PWM					21
+
+#define TIMER2_FAST_PWM								23
+
+
+//OC2 State
+
+#define TIMER2_OVF_DISCONNECT_OC2					25
+
+#define TIMER2_CTC_DISCONNECT_OC2					27
+
+#define TIMER2_CTC_TOGGLE_OC2						29
+
+#define TIMER2_CTC_CLEAR_OC2						31
+
+#define TIMER2_CTC_SET_OC2							33
+
+#define TIMER2_FAST_PMW_CLEAR_CTC_SET_TOP			35
+
+#define TIMER2_FAST_PMW_SET_CTC_CLEAR_TOP			37
+
+#define TIMER2_PHASE_CLEAR_CTC_SET_TOP				39
+
+#define TIMER2_PHASE_SET_CTC_CLEAR_TOP				41
+
+
+#endif /* MCAL_TIMER_TIMER2_TIMER2_PRIV_H_ */
