@@ -28,11 +28,11 @@
 
 #define TIMER1_COMPARE_MATCH_TOP_OCR1A			           4
 
-#define TIMER1_FAST_PMW_8BIT                               5
+#define TIMER1_FAST_PWM_8BIT                               5
 
-#define TIMER1_FAST_PMW_9BIT                               6
+#define TIMER1_FAST_PWM_9BIT                               6
 
-#define TIMER1_FAST_PMW_10BIT                              7
+#define TIMER1_FAST_PWM_10BIT                              7
 
 #define TIMER1_PHASE_FREQ_CORRECT_TOP_ICR1                 8
 
@@ -61,9 +61,9 @@
 
 #define TIMER1_CTC_SET_OC1A_B						33
 
-#define TIMER1_FAST_PMW_CLEAR_CTC_SET_BOTTOM		35  //NON_INVERTING
+#define TIMER1_FAST_PWM_CLEAR_CTC_SET_BOTTOM		35  //NON_INVERTING
 
-#define TIMER1_FAST_PMW_SET_CTC_CLEAR_BOTTOM		37   //INVERTING
+#define TIMER1_FAST_PWM_SET_CTC_CLEAR_BOTTOM		37   //INVERTING
 
 #define TIMER1_PHASE_CLEAR_CTC_SET_TOP				39
 
