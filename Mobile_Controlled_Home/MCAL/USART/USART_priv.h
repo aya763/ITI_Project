@@ -8,7 +8,7 @@
 #ifndef MCAL_USART_USART_PRIV_H_
 #define MCAL_USART_USART_PRIV_H_
 
-#define F_CPU    1000000UL
+#define F_CPU    8000000UL
 #define BUAD(BUAD_VAL)         (u16)(F_CPU/(SPEED_MODE*8*BUAD_VAL)-1)
 
 //speed mode
