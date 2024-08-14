@@ -1,16 +1,8 @@
-/*
- * APP_interface.h
- *
- *  Created on: Aug 14, 2024
- *      Author: [Samar ibrahim]
- */
 
-#ifndef APP_APP_INTERFACE_H_
-#define APP_APP_INTERFACE_H_
+#ifndef HAL_APP_APP_INTERFACE_H_
+#define HAL_APP_APP_INTERFACE_H_
 
-
-#include "../LIB/STD_Types.h"
-
+///#include "APP_config.h"
 // Structure to store user data (username and password)
 typedef struct {
     u8 username[USERNAME_SIZE];
@@ -32,4 +24,8 @@ s8 findUser(User_t *inputUser);
 void updateUserPassword(u8 userIndex, u8 *newPassword);
 
 
-#endif /* APP_APP_INTERFACE_H_ */
+void application_intialize(void);
+u8* CheckUserNumber(u8 *User_u8Num);
+ES_t CheckUserPassword(void);
+
+#endif
