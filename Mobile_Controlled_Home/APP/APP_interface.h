@@ -23,8 +23,7 @@ LOG_t APP_FindUser(User_t *inputUser);
 /*Function to update the password for a user*/
 void updateUserPassword(u8 userIndex, u8 *newPassword);
 
-
-ES_t APP_enuInit(void);
+ES_t application_intialize(void);
 
 u8* CheckUserNumber(u8 *User_u8Num);
 
