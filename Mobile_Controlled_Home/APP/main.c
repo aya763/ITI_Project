@@ -10,6 +10,11 @@
 
 #include "../LIB/STD_Types.h"
 #include "../LIB/errorState.h"
+
+#include "APP_Types.h"
+
+//#include "APP_config.h"
+//#include "APP_private.h"
 #include"APP_interface.h"
 
 
@@ -22,7 +27,7 @@ volatile u8 check=0;
 int main()
 {
 
-	application_intialize();
+	APP_enuInit();
 
 	ret = LCD_enuGoToPosition(1,1);
 	ret = LCD_enuDisplayString("Door Closed");

@@ -16,7 +16,7 @@ void storeUserInEEPROM(User_t *user, u8 userIndex);
 void readUserFromEEPROM(User_t *user, u8 userIndex);
 
 /* Function to find user by username in EEPROM*/
-s8 findUser(User_t *inputUser);
+LOG_t APP_FindUser(User_t *inputUser);
 
 
 
@@ -24,8 +24,10 @@ s8 findUser(User_t *inputUser);
 void updateUserPassword(u8 userIndex, u8 *newPassword);
 
 
-void application_intialize(void);
+ES_t APP_enuInit(void);
+
 u8* CheckUserNumber(u8 *User_u8Num);
+
 ES_t CheckUserPassword(void);
 
 #endif
