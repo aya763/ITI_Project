@@ -8,8 +8,7 @@
 #ifndef HAL_LED_LED_INTERFACE_H_
 #define HAL_LED_LED_INTERFACE_H_
 
-#include "LED_private.h"
-#include "LED_config.h"
+
 
 ES_t LED_enuInit(LED_t * copy_pstrLedConfig);
 

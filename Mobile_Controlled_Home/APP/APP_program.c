@@ -4,6 +4,7 @@
 #include "../LIB/errorState.h"
 #include "../MCAL/DIO/DIO_interface.h"
 #include "../HAL/LCD/LCD_int.h"
+#include "../HAL/LED/LED_config.h"
 #include "../HAL/LED/LED_interface.h"
 #include "../MCAL/USART/USART_int.h"
 #include "../HAL/HC-05/HC-05_interface.h"
@@ -16,8 +17,10 @@
 
 
 ES_t error ;
-extern LED_t LED1_green;
-extern LED_t LED2_red;
+extern LED_t LED_AstrLedConfig[LED_NUM];
+
+//extern LED_t LED1_green;
+//extern LED_t LED2_red;
 /*************************************************************
  * Function to check user number and get password from EEBROM
  ************************************************************/
@@ -77,8 +80,8 @@ ES_t CheckUserPassword(void){
 
 	if(strcmp( Password_check, User_Password) == 0  ){
 		/*Turn On green Led */
-    	LED_enuTurnON(&LED1_green);
-    	LED_enuTurnOFF(&LED2_red);
+    	LED_enuTurnON(&LED_AstrLedConfig[0]);
+    	LED_enuTurnOFF(&LED_AstrLedConfig[1]);
     	L_Error =HC_05_enuSendString(" Correct password ");
     	/*Open the Door*/
 
@@ -94,8 +97,8 @@ ES_t CheckUserPassword(void){
 	else{
 		/*Turn On red Led */
 
-   	    LED_enuTurnON(&LED2_red);
-   	    LED_enuTurnOFF(&LED1_green);
+   	    LED_enuTurnON(&LED_AstrLedConfig[1]);
+   	    LED_enuTurnOFF(&LED_AstrLedConfig[0]);
     	L_Error =HC_05_enuSendString("Wrong password ");
     	L_Error =LCD_enuGoToPosition(1,1);
     	L_Error =LCD_enuDisplayString("Door Closed");
@@ -183,8 +186,8 @@ s8 findUser(User_t *inputUser)
  ************************************************/
 void application_intialize(void){
 
-	error = LED_enuInit(&LED1_green);
-	error = LED_enuInit(&LED2_red);
+	error = LED_enuInit(LED_AstrLedConfig);
+	//error = LED_enuInit(&LED2_red);
 	error = HC_05_enuInit();
 	error = SERVO_enudInit();
 	LCD_enuInit();

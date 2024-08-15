@@ -2,7 +2,7 @@
 #ifndef HAL_APP_APP_INTERFACE_H_
 #define HAL_APP_APP_INTERFACE_H_
 
-///#include "APP_config.h"
+#include "APP_config.h"
 // Structure to store user data (username and password)
 typedef struct {
     u8 username[USERNAME_SIZE];
