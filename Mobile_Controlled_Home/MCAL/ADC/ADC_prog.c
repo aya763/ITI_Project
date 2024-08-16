@@ -7,6 +7,7 @@
 #include "../../LIB/errorState.h"
 #include  "../../LIB/STD_Types.h"
 
+#include "ADC_int.h"
 #include "ADC_config.h"
 #include "ADC_priv.h"
 
@@ -306,7 +307,21 @@ ES_t ADC_enuDisable(void)
 	 return Local_enuErrorState;
 }
 
+ES_t ADC_Read_From_Ch(u16 *Copy_pu16ReadValue, u8 Copy_u8ChannelID)
+{
+	ES_t Local_enuErrorState = ES_NOK;
 
+	ADC_enuEnable();
+	ADC_enuDisableTriggeringMode();
+	ADC_enuSelectChannel(Copy_u8ChannelID);
+	ADC_enuStartConversion();
+	ADC_enuDisableInterruptMode();
+	ADC_enuPollingSystem();
+	ADC_enuRead(Copy_pu16ReadValue);
+	ADC_enuDisable();
+
+	return Local_enuErrorState;
+}
 ISR(VECT_ADC)
 {
 	if(ADC_pfunISRFun!=NULL)
