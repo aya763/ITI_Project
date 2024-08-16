@@ -236,6 +236,7 @@ void Master_Mode(void)
 		HC_05_enuSendString("\r\t1-ADD USER\r\t2-Delete USER\r\t3-CHANGE PASSWORD\r\t4-SHOW USERS\r\t5-SHOW HOME STATUES\r\t6-RETURN HOME PAGE\r\t");
 		HC_05_enuSendString("YOUR OPTION NUMBER:");
 		HC_05_enuRecieveChar(&Option);
+		HC_05_enuSendChar(Option);
 		switch(Option)
 		{
 		case '1':
@@ -272,37 +273,17 @@ void DELETE_User(void)
 	HC_05_enuSendString("\r\tEnter Number of user you want Delete:");
 	HC_05_enuRecieveChar(&Index);
 	HC_05_enuSendChar(Index);
-	if(Index<10)
+	if(Index >=30 && Index<40)
 	{
 		HC_05_enuSendString("WRONG User Index\r\t");
 		return;
 	}
 	HC_05_enuSendString("\r\t");
 
-	User_t FREE[1]={{"FREE","FREE"}};
-	//strcpy(FREE.username,"FREE");
-	//strcpy(FREE.password,"FREE");
-	/*FREE.username="FREE";
-	FREE.password="FREE";*/
+	User_t FREE={0};
 
-	//storeUserInEEPROM(&FREE[0],Index);
-	u8 DELETE[USERNAME_SIZE]={0};
+	storeUserInEEPROM(&FREE,(Index-'0'));
 
-	u16 address = EEPROM_START_ADDRESS + Index * (USERNAME_SIZE + PASSWORD_SIZE);//example:address=0x000+1*(5+4)=9
-
-	for(u8 i = 0; i < USERNAME_SIZE; i++)
-	{
-		EEPROM_enuWriteData(address + i, DELETE[i]);
-		_delay_ms(10);
-	}
-	address += USERNAME_SIZE; // after store username address is change
-
-	// Store password in EEPROM
-	for(u8 i = 0; i < PASSWORD_SIZE; i++)
-	{
-		EEPROM_enuWriteData(address + i, DELETE[i]);
-		_delay_ms(10);
-	}
 
 
 }
@@ -310,8 +291,8 @@ void DELETE_User(void)
 void Show_Users(void)
 {
 	User_t storedUser;
-	HC_05_enuSendString("\r\t************************USERS****************************");
-	for(u8 i = 0; i < MAX_USERS; i++) //i is index of user
+	HC_05_enuSendString("\r\t************************USERS****************************\r\t");
+	for(u8 i = 1; i < MAX_USERS; i++) //i is index of user
 	{
 		readUserFromEEPROM(&storedUser, i);
 		HC_05_enuSendChar(i+'0');
