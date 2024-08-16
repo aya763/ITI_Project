@@ -38,74 +38,31 @@ static volatile u8 DOOR_State=0,GREENLED_State=0,REDLED_State=0,Current_Index=0;
 User_t Current_User;
 
 
-/******************************************************************
- * Function to check user password and make actions according to it
- ******************************************************************/
-ES_t CheckUserPassword(void){
-User_t InputUser;
-	ES_t L_Error=ES_OK;
-	s32 check1=90;
-
-	LED_enuInit(LED_AstrLedConfig);
-	L_Error =HC_05_enuSendString("User name: ");
-	L_Error= HC_05_enuRecieveString(InputUser.username);
-
-	L_Error =HC_05_enuSendString("Password : ");
-	L_Error =HC_05_enuRecieveString(InputUser.password);
-
-
-   check1=findUser(&InputUser);
-   LCD_enuDisplayNum(check1);
-   if(check1>=0){
-		/*Turn On green Led */
-	   LED_enuTurnON(&LED_AstrLedConfig[1]);
-	   LED_enuTurnOFF(&LED_AstrLedConfig[0]);
-
-    	/*Open the Door*/
-    	L_Error =LCD_enuDisplayString("Correct");
-    	L_Error= SERVO_enuSetAngle(90);
-    	/*Display Door Open On LCD*/
-    	L_Error =LCD_enuGoToPosition(1,1);
-    	L_Error =LCD_enuDisplayString("Door Open");
-    	LCD_enuGoToPosition(2,1);
-    	/*Display LED Green ON On LCD*/
-    	LCD_enuDisplayString("LED1:ON,LED2:OFF");
-    	L_Error = ES_OK;
-	}
-	else{
-		/*Turn On red Led */
-
-   	    LED_enuTurnON(&LED_AstrLedConfig[0]);
-   	    LED_enuTurnOFF(&LED_AstrLedConfig[1]);
-    	L_Error =HC_05_enuSendString("Wrong password ");
-    	L_Error =LCD_enuGoToPosition(1,1);
-    	L_Error =LCD_enuDisplayString("Door Closed");
-    	LCD_enuGoToPosition(2,1);
-    	/*Display LED red ON On LCD*/
-    	LCD_enuDisplayString("LED1:OFF,LED2:ON");
-        check1=0;
-        L_Error = ES_NOK;
-	}
-
- return L_Error;
-
-}
-
 /************************************************
  *Function used to initialization
  ************************************************/
-ES_t application_intialize(void){
-	ES_t error=ES_NOK;
-	error=LCD_enuInit();
-	error = LED_enuInit(LED_AstrLedConfig);
-	error=EEPROM_enuInit();
-	//error = LED_enuInit(&LED2_red);
-	error = HC_05_enuInit();
-	error = SERVO_enudInit();
-	//LCD_enuDisplayString("WELCOME");
+ES_t APP_enuInit(void)
+{
+	ES_t Local_enuErrorState=ES_NOK;
+
+	Local_enuErrorState = EEPROM_enuInit();
+	Local_enuErrorState = HC_05_enuInit();
+	Local_enuErrorState = SERVO_enudInit();
+	Local_enuErrorState = LCD_enuInit();
+	Local_enuErrorState = LED_enuInit(LED_AstrLedConfig);
+
+
+	// SAVE USERS IN EEPROM
+
+	for(u8 i=0;i<MAX_USERS;i++)
+	{
+
+		storeUserInEEPROM(&APP_AstUsers[i],i);
+	}
+
+	return Local_enuErrorState;
 
 }
-
 
 /****************************************
  *  Function to store user data in EEPROM
@@ -128,6 +85,21 @@ void storeUserInEEPROM(User_t *user, u8 userIndex)
         _delay_ms(10);
     }
 }
+
+
+ES_t APP_enuStart(void)
+{
+	ES_t Local_enuErrorState=ES_NOK;
+
+	HC_05_enuSendString("***********Welcome To Your Smart Home**********\r\t");
+
+	APP_enuCheckUserPassword();
+
+
+
+	return Local_enuErrorState;
+}
+
 
 /****************************************
  *  Function to Add New user in EEPROM
@@ -178,10 +150,167 @@ void storeUserInEEPROM(User_t *user, u8 userIndex)
 	  return Local_enuErrorState;
  }
 
-/****************************************
- *  Function to Delete user in EEPROM
- * ***************************************/
 
+
+
+/******************************************************************
+ * Function to check user password and make actions according to it
+ ******************************************************************/
+ES_t APP_enuCheckUserPassword(void)
+{
+
+	ES_t Local_enuErrorState=ES_OK;
+	User_t InputUser, check;
+	u8 check_find=0;
+
+	LED_enuTurnOFF(&LED_AstrLedConfig[0]);
+    LED_enuTurnOFF(&LED_AstrLedConfig[1]);
+    GREENLED_State=0;
+    REDLED_State=0;
+
+
+	Local_enuErrorState =HC_05_enuSendString("\r\tUser name: ");
+	Local_enuErrorState= HC_05_enuRecieveString(InputUser.username);
+	Local_enuErrorState =HC_05_enuSendString(InputUser.username);
+
+	Local_enuErrorState =HC_05_enuSendString("\r\tPassword : ");
+	Local_enuErrorState =HC_05_enuRecieveString(InputUser.password);
+	Local_enuErrorState =HC_05_enuSendString(InputUser.password);
+	Local_enuErrorState =HC_05_enuSendString("\r\t");
+
+	//ReadUserFromEEPROM(&check,0);
+	//Local_enuErrorState =HC_05_enuSendString(check.password);
+
+
+	check_find=APP_FindUser(&InputUser);
+
+	if(check_find==LOG_MASTER)
+    {
+		Local_enuErrorState =HC_05_enuSendString("\r\tCorrect\r\t");
+
+		/*Turn On green Led */
+	   LED_enuTurnON(&LED_AstrLedConfig[0]);
+	   LED_enuTurnOFF(&LED_AstrLedConfig[1]);
+	   GREENLED_State=1;
+	   REDLED_State=0;
+		LCD_enuGoToPosition(2,1);
+		/*Display LED Green ON On LCD*/
+		LCD_enuDisplayString("LED1:ON,LED2:OFF");
+
+		Master_Mode();
+
+		/*Open the Door
+		Local_enuErrorState= SERVO_enuSetAngle(90);
+		Display Door Open On LCD
+		Local_enuErrorState =LCD_enuGoToPosition(1,1);
+		Local_enuErrorState =LCD_enuDisplayString("Door Open");*/
+		Local_enuErrorState = ES_OK;
+	}
+
+	else if(check_find==LOG_SUCCESS)
+    {
+	   Local_enuErrorState =HC_05_enuSendString("\r\tCorrect\r\t");
+	    /*Turn On green Led */
+	   LED_enuTurnON(&LED_AstrLedConfig[0]);
+	   LED_enuTurnOFF(&LED_AstrLedConfig[1]);
+	   GREENLED_State=1;
+	   REDLED_State=0;
+
+	   LCD_enuGoToPosition(2,1);
+	   /*Display LED Green ON On LCD*/
+	   LCD_enuDisplayString("LED1:ON,LED2:OFF");
+	   USER_Mode();
+
+    	/*Open the Door
+    	Local_enuErrorState= SERVO_enuSetAngle(90);
+    	Display Door Open On LCD
+    	Local_enuErrorState =LCD_enuGoToPosition(1,1);
+    	Local_enuErrorState =LCD_enuDisplayString("Door Open");
+    	LCD_enuGoToPosition(2,1);
+    	Display LED Green ON On LCD
+    	LCD_enuDisplayString("LED1:ON,LED2:OFF");*/
+    	Local_enuErrorState = ES_OK;
+	}
+	else if(check_find==LOG_PASS_INCORRECT)
+	{
+		/*Turn On red Led */
+
+    	Local_enuErrorState =HC_05_enuSendString("\r\tWrong password\r\t");
+   	    LED_enuTurnON(&LED_AstrLedConfig[1]);
+   	    LED_enuTurnOFF(&LED_AstrLedConfig[0]);
+	    GREENLED_State=0;
+	    REDLED_State=1;
+    	LCD_enuGoToPosition(2,1);
+    	/*Display LED red ON On LCD*/
+    	LCD_enuDisplayString("LED1:OFF,LED2:ON");
+    	Local_enuErrorState= SERVO_enuSetAngle(-90);
+    	Local_enuErrorState =LCD_enuGoToPosition(1,1);
+    	Local_enuErrorState =LCD_enuDisplayString("Door Closed");
+
+        Local_enuErrorState = ES_NOK;
+	}
+	else if(check_find==LOG_USER_NOTFOUND)
+	{
+
+	    	Local_enuErrorState =HC_05_enuSendString("\r\tWrong User\r\t");
+			/*Turn On red Led */
+	   	    LED_enuTurnON(&LED_AstrLedConfig[1]);
+	   	    LED_enuTurnOFF(&LED_AstrLedConfig[0]);
+	   	    GREENLED_State=0;
+	   	 	REDLED_State=1;
+	    	LCD_enuGoToPosition(2,1);
+	    	/*Display LED red ON On LCD*/
+	    	LCD_enuDisplayString("LED1:OFF,LED2:ON");
+	    	Local_enuErrorState= SERVO_enuSetAngle(-90);
+	    	Local_enuErrorState =LCD_enuGoToPosition(1,1);
+	    	Local_enuErrorState =LCD_enuDisplayString("Door Closed");
+
+	       Local_enuErrorState = ES_NOK;
+		}
+
+   return Local_enuErrorState;
+
+}
+
+
+void Master_Mode(void)
+{
+	u8 Option;
+	HC_05_enuSendString("*******Welcome to MASTER MODE*******\r\t");
+
+	while(1)
+	{
+		HC_05_enuSendString("\r\t1-ADD USER\r\t2-Delete USER\r\t3-CHANGE PASSWORD\r\t4-SHOW USERS\r\t5-SHOW HOME STATUES\r\t6-RETURN HOME PAGE\r\t");
+		HC_05_enuSendString("YOUR OPTION NUMBER:");
+		HC_05_enuRecieveChar(&Option);
+		HC_05_enuSendChar(Option);
+		switch(Option)
+		{
+		case '1':
+
+			break;
+		case '2':
+			DELETE_User();
+			break;
+		case '3':
+			Change_Password();
+			return;
+			break;
+		case '4':
+			Show_Users();
+			break;
+		case '5':
+			Show_Home_State();
+			break;
+		case '6':
+			return;
+			break;
+		default:
+			HC_05_enuSendString("WRONG CHOICE OPTION\r\t\r\t");
+			break;
+		}
+	}
+}
 
 void DELETE_User(void)
 {
@@ -206,9 +335,6 @@ void DELETE_User(void)
 
 }
 
-/****************************************
- *  Function to Show user in EEPROM
- * ***************************************/
 void Show_Users(void)
 {
 	User_t storedUser;
@@ -225,9 +351,59 @@ void Show_Users(void)
 	HC_05_enuSendString("*********************************************\r\t");
 }
 
-/****************************************
- *  Function to Change password in EEPROM
- * ***************************************/
+
+void USER_Mode(void)
+{
+	u8 Option;
+	HC_05_enuSendString("*******Welcome to USER MODE*******\r\t");
+
+	while(1)
+	{
+		HC_05_enuSendString("\r\t1-OPEN DOOR\r\t2-CLOSE DOOR\r\t3-CHANGE PASSWORD\r\t4-SHOW HOME STATUES\r\t5-RETURN HOME PAGE\r\t");
+		HC_05_enuSendString("YOUR OPTION NUMBER:");
+		HC_05_enuRecieveChar(&Option);
+		HC_05_enuSendChar(Option);
+		HC_05_enuSendString("\r\t");
+		switch(Option)
+		{
+		case '1':
+			SERVO_enuSetAngle(90);
+			/*Display Door Open On LCD*/
+			LCD_enuGoToPosition(1,1);
+			LCD_enuDisplayString("Door Open");
+			DOOR_State=1;
+			break;
+		case '2':
+			SERVO_enuSetAngle(-90);
+			/*Display Door Open On LCD*/
+			LCD_enuGoToPosition(1,1);
+			LCD_enuDisplayString("Door Closed");
+			DOOR_State=0;
+			break;
+		case '3':
+			Change_Password();
+			return;
+			break;
+		case '4':
+			Show_Home_State();
+			break;
+		case '5':
+			return;
+			break;
+		/*case '6':
+
+			break;
+		case '7':
+
+			break;*/
+		default:
+			HC_05_enuSendString("WRONG CHOICE OPTION\r\t\r\t");
+			break;
+		}
+	}
+}
+
+
 
 void Change_Password()
 {
@@ -252,6 +428,39 @@ void Change_Password()
 	}
 
 }
+
+
+void Show_Home_State(void)
+{
+	HC_05_enuSendString("\r\t**************STATEUS*****************\r\t");
+	if(DOOR_State)
+	{
+		HC_05_enuSendString("DOOR OPEN\r\t");
+	}
+	else
+	{
+		HC_05_enuSendString("DOOR Close\r\t");
+	}
+	if(GREENLED_State)
+	{
+		HC_05_enuSendString("GREEN LED ON\r\t");
+	}
+	else
+	{
+		HC_05_enuSendString("GREEN LED OFF\r\t");
+	}
+	if(REDLED_State)
+	{
+		HC_05_enuSendString("RED LED ON\r\t");
+	}
+	else
+	{
+		HC_05_enuSendString("RED LED OFF\r\t");
+	}
+	HC_05_enuSendString("\r\t*******************************\r\t");
+}
+
+
 
 
 
