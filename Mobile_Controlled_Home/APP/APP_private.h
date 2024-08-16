@@ -28,6 +28,8 @@ ES_t APP_enuCheckUserPassword(void);
 
 void Master_Mode(void);
 
+void Add_User(void);
+
 void DELETE_User(void);
 
 void Show_Users(void);

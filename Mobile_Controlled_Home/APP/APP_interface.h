@@ -14,7 +14,7 @@ ES_t APP_enuInit(void);
 
 ES_t APP_enuStart(void);
 
-ES_t AddUserInEEPRROM(void);
+
 
 
 

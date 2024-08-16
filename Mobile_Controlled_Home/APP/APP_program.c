@@ -101,54 +101,7 @@ ES_t APP_enuStart(void)
 }
 
 
-/****************************************
- *  Function to Add New user in EEPROM
- * ***************************************/
- ES_t AddUserInEEPRROM(void)
- {
-	 ES_t Local_enuErrorState=ES_NOK;
-	 u8 CheckValid=0;
-	 u8 EmptyIndex=0xff;
-	 User_t newUser;
-	  for(u8 i = 0; i < MAX_USERS; i++)
-	    {
-	        if(APP_AstUsers[i].username[0] == 0) // Check if the username is empty
-	        {
-	            EmptyIndex = i;
-	            CheckValid = 1;
-	            break;
-	        }
-	    }
-	  if(CheckValid!=1){
-		  HC_05_enuSendString("\r\tNo available Place to add new user.\r\t");
 
-	  }
-	  else{
-
-
-		     // Get username from the user
-		     HC_05_enuSendString("\r\tEnter Username: ");
-		     HC_05_enuRecieveString(newUser.username);
-		     HC_05_enuSendString(newUser.username);
-		     HC_05_enuSendString("\r\t");
-
-		     // Get password from the user
-		     HC_05_enuSendString("\r\tEnter Password: ");
-		     HC_05_enuRecieveString(newUser.password);
-		     HC_05_enuSendString(newUser.password);
-		     HC_05_enuSendString("\r\t");
-
-		     // Store the new user in EEPROM
-		     storeUserInEEPROM(&newUser, EmptyIndex);
-
-		     // Update the local array
-		     APP_AstUsers[EmptyIndex] = newUser;
-
-		     HC_05_enuSendString("\r\tUser added successfully!\r\t");
-		     Local_enuErrorState=ES_OK;
-	  }
-	  return Local_enuErrorState;
- }
 
 
 
@@ -287,7 +240,7 @@ void Master_Mode(void)
 		switch(Option)
 		{
 		case '1':
-
+			Add_User();
 			break;
 		case '2':
 			DELETE_User();
@@ -312,6 +265,50 @@ void Master_Mode(void)
 	}
 }
 
+/****************************************
+ *  Function to Add New user in EEPROM
+ * ***************************************/
+void Add_User(void)
+ {
+
+	u8 Index=0;
+	User_t InputUser;
+	Show_Users();
+
+	HC_05_enuSendString("\r\tEnter INDEX of FREE Space:");
+	HC_05_enuRecieveChar(&Index);
+	HC_05_enuSendChar(Index);
+	readUserFromEEPROM(&InputUser,(Index-'0'));
+	if(strcmp(InputUser.username, "FREE") != 0)
+	{
+		HC_05_enuSendString("\r\tWRONG User Index. Choose FREE Space\r\t");
+		return;
+	}
+	HC_05_enuSendString("\r\t");
+
+
+
+	// Get username from the user
+	 HC_05_enuSendString("\r\tEnter Username: ");
+	 HC_05_enuRecieveString(InputUser.username);
+	 HC_05_enuSendString(InputUser.username);
+	 HC_05_enuSendString("\r\t");
+
+
+	 // Get password from the user
+	 HC_05_enuSendString("\r\tEnter Password: ");
+	 HC_05_enuRecieveString(InputUser.password);
+	 HC_05_enuSendString(InputUser.password);
+	 HC_05_enuSendString("\r\t");
+
+	 // Store the new user in EEPROM
+	 storeUserInEEPROM(&InputUser, (Index-'0'));
+
+	 HC_05_enuSendString("\r\tUser added successfully!\r\t");
+
+
+}
+
 void DELETE_User(void)
 {
 	u8 Index=0;
@@ -320,18 +317,18 @@ void DELETE_User(void)
 	HC_05_enuSendString("\r\tEnter Number of user you want Delete:");
 	HC_05_enuRecieveChar(&Index);
 	HC_05_enuSendChar(Index);
-	if(Index >=30 && Index<40)
+	if(Index >30 && Index<40)
 	{
-		HC_05_enuSendString("WRONG User Index\r\t");
+		HC_05_enuSendString("\r\tWRONG User Index\r\t");
 		return;
 	}
 	HC_05_enuSendString("\r\t");
 
-	User_t FREE={0};
+	User_t FREE[1]={{"FREE","FREE"}};
 
-	storeUserInEEPROM(&FREE,(Index-'0'));
+	storeUserInEEPROM(&FREE[0],(Index-'0'));
 
-
+	HC_05_enuSendString("\r\tUser Deleted successfully!\r\t");
 
 }
 
