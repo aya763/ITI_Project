@@ -1,0 +1,18 @@
+/*
+ * TIMER2_config.h
+ *
+ *  Created on: Aug 2, 2024
+ *      Author: aya
+ */
+
+#ifndef MCAL_TIMER_TIMER2_TIMER2_CONFIG_H_
+#define MCAL_TIMER_TIMER2_TIMER2_CONFIG_H_
+
+#define TIMER2_PRESCALER				TIMER2_PRESCALER_8
+
+#define TIMER2_MODE					    TIMER2_COMPARE_MATCH
+
+#define TIMER2_OC2_PIN_STATE			  TIMER2_CTC_DISCONNECT_OC2
+
+
+#endif /* MCAL_TIMER_TIMER2_TIMER2_CONFIG_H_ */
