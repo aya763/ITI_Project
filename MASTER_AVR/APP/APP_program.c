@@ -386,10 +386,10 @@ void USER_Mode(void)
 	while(1)
 	{
 		HC_05_enuSendString("1-OPEN DOOR\r\n2-CLOSE DOOR\r\n3-CHANGE LEDs STATUES\r\n4-CHANGE PASSWORD\r\n5-SHOW HOME STATUES\r\n6-RETURN HOME PAGE\r\n");
-		HC_05_enuSendString("YOUR OPTION NUMBER:\r\n");
+		HC_05_enuSendString("YOUR OPTION NUMBER:");
 		HC_05_enuRecieveChar(&Option);
 		HC_05_enuSendChar(Option);
-		HC_05_enuSendString("\n");
+		HC_05_enuSendString("\r\n");
 		switch(Option)
 		{
 		case '1':
@@ -426,7 +426,7 @@ void USER_Mode(void)
 
 			break;*/
 		default:
-			HC_05_enuSendString("WRONG CHOICE OPTION");
+			HC_05_enuSendString("WRONG CHOICE OPTION\r\n\r\n");
 			break;
 		}
 	}
@@ -617,25 +617,37 @@ void Change_LED_State(void){
 void Control_Room(void){
 	 u8 Option ,Copy_u8Data ;
 	 ES_t Local_enuErrorState =ES_NOK;
-	 HC_05_enuSendString("\r\n1-Open the Door\r\n2-Close The Door\r\n3-Turn ON red LED\r\n4-Turn OFF red LED\r\n5-Turn ON Green LED\r\n6-Turn OFF Green LED\r\n");
-	 HC_05_enuRecieveChar(&Option);
+	 HC_05_enuSendString("\r\n*******Welcome ROOM*******\r\n");
+	 while(1)
+	 {
 
-	 HC_05_enuSendString("\r\n");
+		 HC_05_enuSendString("\r\n1-Open the Door\r\n2-Close The Door\r\n3-Turn ON red LED\r\n4-Turn OFF red LED\r\n5-Turn ON Green LED\r\n6-Turn OFF Green LED\r\n7-RETURN TO MASTER\r\n");
+		 HC_05_enuRecieveChar(&Option);
+
+		 HC_05_enuSendString("\r\n");
+
+		 if(Option=='7')
+		 {
+			 HC_05_enuSendString("RETURN TO MASTER\r\n\r\n");
+			 break;
+		 }
 
 
-		if(ES_OK==IIC_enuStartCondition())
-		{
-
-			if(ES_OK==IIC_enuWriteSlaveAddress(0x16,0))
+			if(ES_OK==IIC_enuStartCondition())
 			{
 
+				if(ES_OK==IIC_enuWriteSlaveAddress(0x16,0))
+				{
 
-					if(ES_OK==IIC_enuWriteData(Option))
-					{
-						Local_enuErrorState=IIC_enuStopCondition();
-				    }
+
+						if(ES_OK==IIC_enuWriteData(Option))
+						{
+							Local_enuErrorState=IIC_enuStopCondition();
+						}
+				}
 			}
-		}
+
+	 }
 
 }
 
