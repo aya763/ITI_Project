@@ -59,29 +59,28 @@ The system supports up to 10 users, each with a unique username and password. An
 
    - **Room Control**: Provides functionalities to control the room.
 
-   ![Room Control GIF](URL_TO_YOUR_ROOM_CONTROL_GIF)  
-   *Room Control Features*
-
-3. **User Mode**:
-   - **Door Control**: Users can open or close the door through Bluetooth commands.
-
-   ![Door Control GIF](C:\Users\user\Downloads\WhatsApp Video 2024-08-18 at 22.50.37_81e4e927.gif)  
-   *Controlling the Door*
-
-   - **Password Management**: Users can change their passwords, which are updated in the EEPROM.
+    ![Room Control](<WhatsApp Video 2024-08-18 at 22.50.37_81e4e927.gif>)
    
-   ![Password Management GIF](URL_TO_YOUR_PASSWORD_MANAGEMENT_GIF)  
-   *Changing User Password*
-
-   - **Status Display**: Users can view the status of the home system including door and alarm status.
-
-   ![Status Display GIF](URL_TO_YOUR_STATUS_DISPLAY_GIF)  
-   *Displaying System Status*
-
-4. **Alarm System**: An alarm is triggered after three consecutive failed login attempts to alert potential unauthorized access.
-
-   ![Alarm GIF](c:\Users\user\Downloads\WhatsApp Video 2024-08-18 at 22.50.32_8ec83ffe (1).gif)  
-   *Alarm Triggered*
+   3. **User Mode**:
+      - **Door Control**: Users can open or close the door through Bluetooth commands.
+   
+      ![Door Control GIF](C:\Users\user\Downloads\WhatsApp Video 2024-08-18 at 22.50.37_81e4e927.gif)  
+      *Controlling the Door*
+   
+      - **Password Management**: Users can change their passwords, which are updated in the EEPROM.
+      
+      ![Password Management GIF](URL_TO_YOUR_PASSWORD_MANAGEMENT_GIF)  
+      *Changing User Password*
+   
+      - **Status Display**: Users can view the status of the home system including door and alarm status.
+   
+      ![Status Display GIF](URL_TO_YOUR_STATUS_DISPLAY_GIF)  
+      *Displaying System Status*
+   
+   4. **Alarm System**: An alarm is triggered after three consecutive failed login attempts to alert potential unauthorized access.
+   ![wrong password](<WhatsApp Video 2024-08-18 at 22.50.32_8ec83ffe (1)-1.gif>)
+      
+      *Alarm Triggered*
 
 ## Security Measures
 
