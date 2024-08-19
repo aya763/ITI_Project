@@ -1,5 +1,6 @@
 # Mobile Controlled Home
 
+![alt text](Smart_Home-1.png)
 ## Overview
 
 The **Mobile Controlled Home** system allows users to control their home environment through a mobile phone application using Bluetooth communication. The system is designed to manage a safety door and light control with the following functionalities:
