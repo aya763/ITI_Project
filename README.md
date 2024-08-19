@@ -59,8 +59,8 @@ The system supports up to 10 users, each with a unique username and password. An
 
    - **Room Control**: Provides functionalities to control the room.
 
-    ![Room Control](<WhatsApp Video 2024-08-18 at 22.50.37_81e4e927.gif>)
-   
+   ![Room Control](<Control Room.gif>)
+
    3. **User Mode**:
       - **Door Control**: Users can open or close the door through Bluetooth commands.
    
@@ -72,7 +72,7 @@ The system supports up to 10 users, each with a unique username and password. An
       ![Password Management GIF](EEPROM_Store.gif)  
       *Store Users in EEPROM* 
 
-      ![alt text](Wrong_Password-1.gif)
+      
       *ADD & DELETE User*
 
       *Changing User Password*
