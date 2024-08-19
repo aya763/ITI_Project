@@ -69,18 +69,24 @@ The system supports up to 10 users, each with a unique username and password. An
    
       - **Password Management**: Users can change their passwords, which are updated in the EEPROM.
       
-      ![Password Management GIF](URL_TO_YOUR_PASSWORD_MANAGEMENT_GIF)  
+      ![Password Management GIF](EEPROM_Store.gif)  
+      *Store Users in EEPROM* 
+
+      ![alt text](Wrong_Password-1.gif)
+      *ADD & DELETE User*
+
       *Changing User Password*
    
       - **Status Display**: Users can view the status of the home system including door and alarm status.
    
-      ![Status Display GIF](URL_TO_YOUR_STATUS_DISPLAY_GIF)  
+     
+      ![Status Display GIF](<Home Status.gif>)
       *Displaying System Status*
    
    4. **Alarm System**: An alarm is triggered after three consecutive failed login attempts to alert potential unauthorized access.
-   ![wrong password](<WhatsApp Video 2024-08-18 at 22.50.32_8ec83ffe (1)-1.gif>)
-      
+      ![alt text](Wrong_Password.gif)
       *Alarm Triggered*
+      
 
 ## Security Measures
 
