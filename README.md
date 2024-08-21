@@ -43,44 +43,40 @@ The system supports up to 10 users, each with a unique username and password. An
 ## Functional Flow
 
 1. **Initialization**: The system initializes, connects to the Bluetooth module, and checks the EEPROM for existing user data and configurations.
-
+   ![Password Management GIF](EEPROM_Store.gif)  
+      *Store Users in EEPROM* 
 
 
 2. **Master Mode**:
    - **User Management**: The master can add or delete users and change the master password. User information is stored and managed in the EEPROM.
-   
-   ![User Management GIF](C:\Users\user\Downloads\WhatsApp Video 2024-08-18 at 22.51.04_85f7eb15 (1).gif)  
+    
+   ![User Management GIF](User_Mangment.gif)
    *Master Mode User Management*
 
    - **Home Status**: The master can view the status of the home system including door status, light status, and alarm status.
    
-   ![Home Status GIF](URL_TO_YOUR_HOME_STATUS_GIF)  
+   ![Home Status GIF](<Home Status.gif>)  
    *Viewing Home Status*
 
    - **Room Control**: Provides functionalities to control the room.
 
    ![Room Control](<Control Room.gif>)
+   *Control Room*
 
    3. **User Mode**:
       - **Door Control**: Users can open or close the door through Bluetooth commands.
-   
-      ![Door Control GIF](C:\Users\user\Downloads\WhatsApp Video 2024-08-18 at 22.50.37_81e4e927.gif)  
+      ![Door Control GIF](Door_Control.gif)
       *Controlling the Door*
    
       - **Password Management**: Users can change their passwords, which are updated in the EEPROM.
       
-      ![Password Management GIF](EEPROM_Store.gif)  
-      *Store Users in EEPROM* 
-
-      
-      *ADD & DELETE User*
-
+      ![Change_User_Password GIF](Change_User_Password.gif)
       *Changing User Password*
    
       - **Status Display**: Users can view the status of the home system including door and alarm status.
    
      
-      ![Status Display GIF](<Home Status.gif>)
+      ![Status Display GIF](Show_HomeStatus.gif)
       *Displaying System Status*
    
    4. **Alarm System**: An alarm is triggered after three consecutive failed login attempts to alert potential unauthorized access.
@@ -99,7 +95,7 @@ The system supports up to 10 users, each with a unique username and password. An
 
 ## Final Overview
 
-You can see the video for the final output in this link [Video Project]()
+You can see the video for the final output in this link [Video Project](https://drive.google.com/drive/folders/1ZNkKKI_RAHSwVl2SVzZfby3KmlPxgrgB)
 
 ## Team Members
 
